@@ -1,4 +1,7 @@
-## Baseline Linear
+import mmh3
+from DataArray import DataArray
+import pandas as pd
+
 '''
 Baseline Linear Model
 - Take in data
@@ -6,18 +9,29 @@ Baseline Linear Model
 - Sort data by hash
 - Linear model to predict index
 '''
-# hash function to take in string
-    # output k length digest
-# linear model take in k length digest
-    # output predicted index
 
 class BaselineLinear:
-    def __init__(data: DataFrame):
+    def __init__(self, data: DataArray, hash):
+        '''
+        data: string information
+        hash: function to hash data
+        '''
         self.data = data
+        self.hash = hash
+        self.sort('digest')
 
-    def hash(data: DataFrame):
+    def generate_digests(self, col: str):
+        series = self.data.get_series()
+        digest_series = pd.Series([''] * len(series))
 
-        pass
-    
-    def sort_by_digest():
-        pass
+        for i in range(len(series)):
+            digest_series[i] = self.hash(series[i])
+        
+        self.data.add_series(col, digest_series)
+
+    def sort(self, col: str):
+        self.generate_digests(col)
+        self.data.sort_by(col)
+        
+def hash(self, key: str):
+    return mmh3.hash(key)
