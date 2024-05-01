@@ -39,7 +39,6 @@ class BaselineHash:
     def predict(self, key: str):
         digest = self.hash(key)
         prediction = self.model(nn.Tensor(digest))
-        if 
         
         return prediction
     
