@@ -1,8 +1,8 @@
-from data import IndexDataset
+from IndexDataset import IndexDataset
 
 import mmh3
 import pandas as pd
-import torch.nn as nn
+from torch import nn
 
 '''
 Baseline Linear Model
@@ -34,7 +34,7 @@ class BaselineHash:
 
     def sort(self, col: str):
         self.generate_digests(col)
-        self.data.sort_by(col)
+        self.data.sort_by_series(col)
 
     def predict(self, key: str):
         digest = self.hash(key)
@@ -42,21 +42,8 @@ class BaselineHash:
         
         return prediction
     
-class LinearRegressionModel(nn.Module):
-    '''
-    TODO:
-    - Custom Loss Function for penalizing outside the range and
-    incorrect predicition (maybe more depending on length of string)
-    '''
-    def __init__(self):
-        super(LinearRegressionModel, self).__init__()
-        self.linear = nn.Linear(1, 1)
-
-    def forward(self, x):
-        return self.linear(x)
-    
 # class HierarchicalModel():
 #     pass
         
-def hash(self, key: str):
+def hash(key: str):
     return mmh3.hash(key)
