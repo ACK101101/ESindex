@@ -29,10 +29,10 @@ class BaselineHash:
 
         for i in range(len(series)):
             digest = self.hash(series[i])
-            norm_digest = digest % self.data.__len__()
+            norm_digest = digest % len(self.data)
             digest_series[i] = norm_digest
             self.min_val = min(self.min_val, norm_digest)
-            self.max_val = max(self.max_val, norm_digest)
+            self.max_val = max(self.max_val, digest)
         
         self.data.add_series(col, digest_series)
 
@@ -44,14 +44,11 @@ class BaselineHash:
         digests = [0] * len(keys)
         for i, key in enumerate(keys):
             digest = self.hash(key.encode())
-            norm_digest = digest % self.data.__len__()
+            norm_digest = digest % len(self.data)
             # norm_digest = (digest - self.min_val) / self.max_val
             digests[i] = norm_digest
         
         return Tensor(digests).unsqueeze(1)
-    
-# class HierarchicalModel():
-#     pass
         
 def hash(key: str):
     return mmh3.hash(key)
