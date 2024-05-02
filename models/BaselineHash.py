@@ -3,7 +3,7 @@ from IndexPredictor import IndexPredictor
 
 import mmh3
 import pandas as pd
-from torch import nn
+from torch import nn, no_grad
 
 '''
 Baseline Linear Model
@@ -38,12 +38,14 @@ class BaselineHash(IndexPredictor):
 
     # Quaterny Search Implementation
     def last_mile_search(self, predicition: int):
+        # Keep the error
         
         pass
 
     def predict(self, key: str) -> int:
         digest = self.hash(key)
-        prediction = self.model(nn.Tensor(digest)).item()
+        with no_grad():
+            prediction = self.model(nn.Tensor(digest)).item()
         
         return prediction
     

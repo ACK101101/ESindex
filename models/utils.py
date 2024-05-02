@@ -1,5 +1,3 @@
-
-
 import pandas as pd
 # TODO: Adjust for custom IndexDataset
 def biased_quaternary_search(series, left, right, target):
