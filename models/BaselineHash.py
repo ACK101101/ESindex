@@ -1,9 +1,8 @@
 from IndexDataset import IndexDataset
-from IndexPredictor import IndexPredictor
 
 import mmh3
 import pandas as pd
-from torch import nn, no_grad
+from torch import nn, no_grad, Tensor
 
 '''
 Baseline Linear Model
@@ -13,13 +12,13 @@ Baseline Linear Model
 - Linear model to predict index of randomized digests
 '''
 
-class BaselineHash(IndexPredictor):
-    def __init__(self, data: IndexDataset, model: nn.Module, hash: callable):
+class BaselineHash:
+    def __init__(self, data: IndexDataset, hash: callable):
         '''
         data: string information
         hash: function to hash data
         '''
-        super(data, model)
+        self.data = data
         self.hash = hash
         self.sort('digest')
 
@@ -36,18 +35,12 @@ class BaselineHash(IndexPredictor):
         self.generate_digests(col)
         self.data.sort_by_series(col)
 
-    # Quaterny Search Implementation
-    def last_mile_search(self, predicition: int):
-        # Keep the error
+    def forward(self, keys: tuple):
+        digests = [0] * len(keys)
+        for i, key in enumerate(keys):
+            digests[i] = self.hash(key.encode())
         
-        pass
-
-    def predict(self, key: str) -> int:
-        digest = self.hash(key)
-        with no_grad():
-            prediction = self.model(nn.Tensor(digest)).item()
-        
-        return prediction
+        return Tensor(digests).unsqueeze(1)
     
 # class HierarchicalModel():
 #     pass

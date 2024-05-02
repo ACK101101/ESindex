@@ -4,8 +4,7 @@ from torch import nn
 import pandas as pd
 
 class BaselineEmbed:
-    def __init__(self, data: IndexDataset, token_len: int, embed_size: int, 
-                 model: nn.Module):
+    def __init__(self, data: IndexDataset, token_len: int, embed_size: int):
         '''
         data: string information
         hash: function to hash data
@@ -16,9 +15,6 @@ class BaselineEmbed:
         
         self.vocab, self.max_len = self.create_vocab()
         self.embed = nn.Embedding(len(self.vocab.keys()), self.embed_size)
-        
-        self.model = model
-        self.sort('embed')
     
     def create_vocab(self):
         vocab = {}
@@ -34,7 +30,7 @@ class BaselineEmbed:
         
         return vocab, max_len
 
-    def predict(self, key: str):
+    def forward(self, key: str):
         embeds = torch.zeros(self.max_len, self.embed_size)
         token_idxs = []
         for i in range(len(key) - self.token_len + 1):
@@ -43,6 +39,5 @@ class BaselineEmbed:
 
         embeds[:len(token_idxs), :] = self.embed[token_idxs]
         embeds = embeds.view(1, self.max_len, -1)
-        prediction = self.model(embeds)
         
-        return prediction
+        return embeds
