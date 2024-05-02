@@ -1,9 +1,9 @@
-from data import IndexDataset
+from IndexDataset import IndexDataset
 from IndexPredictor import IndexPredictor
 
 import mmh3
 import pandas as pd
-import torch.nn as nn
+from torch import nn
 
 '''
 Baseline Linear Model
@@ -34,7 +34,7 @@ class BaselineHash(IndexPredictor):
 
     def sort(self, col: str):
         self.generate_digests(col)
-        self.data.sort_by(col)
+        self.data.sort_by_series(col)
 
     # Quaterny Search Implementation
     def last_mile_search(self, predicition: int):
@@ -50,5 +50,5 @@ class BaselineHash(IndexPredictor):
 # class HierarchicalModel():
 #     pass
         
-def hash(self, key: str):
+def hash(key: str):
     return mmh3.hash(key)
