@@ -2,7 +2,7 @@ from IndexDataset import IndexDataset
 
 import mmh3
 import pandas as pd
-from torch import nn
+from torch import nn, no_grad
 
 '''
 Baseline Linear Model
