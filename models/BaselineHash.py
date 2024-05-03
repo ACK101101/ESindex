@@ -28,7 +28,7 @@ class BaselineHash:
         digest_series = pd.Series([''] * len(series))
 
         for i in range(len(series)):
-            digest = self.hash(series[i])
+            digest = self.hash(series[i].encode())
             norm_digest = digest % len(self.data)
             digest_series[i] = norm_digest
             self.min_val = min(self.min_val, norm_digest)
